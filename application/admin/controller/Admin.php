@@ -19,6 +19,7 @@ class Admin extends Controller
     {
     	if (request()->isPost()) {
     		$data = input('post.');
+    		//dump($data);
     		$res = db('bk_admin')->insert($data);
 
     		if($res){
