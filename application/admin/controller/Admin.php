@@ -2,9 +2,17 @@
 namespace app\admin\controller;
 // use think\View;
 use \think\Controller;
+use app\admin\model\Admin as AdminModel;
 
 class Admin extends Controller
 {
+
+    // public function _initialize()
+    // {
+    //    $admin = new AdminModel();
+    // }
+
+
     public function lst()
     {
         // return view();
@@ -12,7 +20,24 @@ class Admin extends Controller
         // 	'view_suffix' => 'htm',
         // ]);
         // return $view->fetch();
-        return $this->fetch();
+       // $res = db('admin')->where(array('name'=>'Coco','password'=>123))->select();
+        $admin = new AdminModel();
+        //$res = db('admin')->where(array('name'=>'Coco','password'=>123))->select();
+        
+         $adminres = $admin->getadmin();
+         //dump($res);
+         $this->assign('adminres',$adminres);
+         return view();
+          //$res = AdminModel::getByPassword(2);
+
+        // foreach ($res as $k => $v) {
+        //    // echo $k.'--'.$v;
+        //    echo $v->password; 
+        //    echo '<br>';
+        // }
+        // dump($res);
+     //    die;
+        
     }
 
     public function add()
@@ -20,7 +45,9 @@ class Admin extends Controller
     	if (request()->isPost()) {
     		$data = input('post.');
     		//dump($data);
-    		$res = db('bk_admin')->insert($data);
+    		// $res = db('bk_admin')->insert($data);
+            $admin = new AdminModel();
+            $res = $admin->addadmin($data);
 
     		if($res){
     			$this->success('添加管理员成功！',url('lst'));
