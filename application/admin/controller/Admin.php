@@ -60,8 +60,20 @@ class Admin extends Controller
     	return $this->fetch();
     }
 
-    public function edit()
+    public function edit($id)
     {
+       if (request()->isPost()) {
+          $data = input('post.');
+           dump($data);die;
+           //return ;
+       }
+        $admins = db('admin')->field('id,name,password')->find($id);
+        //dump($admins);die;
+        if (!$admins) {
+            $this->error('该管理员不存在！');
+        }
+
+        $this->assign('admins',$admins);
     	return $this->fetch();
     }
 }
