@@ -1,23 +1,23 @@
 <?php
-namespace app\admin\controller;
+namespace app\cate\controller;
 use \think\Controller;
-use app\admin\model\Admin as AdminModel;
-use app\admin\controller\Common;
+use app\cate\model\cate as cateModel;
+use app\cate\controller\Common;
 
-class Admin extends Common
+class cate extends Common
 {
 
     public function lst()
     {
-       // $res = db('admin')->where(array('name'=>'Coco','password'=>123))->select();
-        $admin = new AdminModel();
-        //$res = db('admin')->where(array('name'=>'Coco','password'=>123))->select();
+       // $res = db('cate')->where(array('name'=>'Coco','password'=>123))->select();
+        $cate = new cateModel();
+        //$res = db('cate')->where(array('name'=>'Coco','password'=>123))->select();
         
-         $adminres = $admin->getadmin();
+         $cateres = $cate->getcate();
          //dump($res);
-         $this->assign('adminres',$adminres);
+         $this->assign('cateres',$cateres);
          return view();
-          //$res = AdminModel::getByPassword(2);
+          //$res = cateModel::getByPassword(2);
 
         // foreach ($res as $k => $v) {
         //    // echo $k.'--'.$v;
@@ -34,9 +34,9 @@ class Admin extends Common
     	if (request()->isPost()) {
     		$data = input('post.');
     		//dump($data);
-    		// $res = db('bk_admin')->insert($data);
-            $admin = new AdminModel();
-            $res = $admin->addadmin($data);
+    		// $res = db('bk_cate')->insert($data);
+            $cate = new cateModel();
+            $res = $cate->addcate($data);
 
     		if($res){
     			$this->success('添加管理员成功！',url('lst'));
@@ -51,13 +51,13 @@ class Admin extends Common
 
     public function edit($id)
     {
-       $admins = db('admin')->find($id);
+       $cates = db('cate')->find($id);
 
        if (request()->isPost()) {
           $data = input('post.');
            //dump($data);die;
-          $admins= new AdminModel();
-          $savenum = $admins->saveadmin($data,$admins);
+          $cates= new cateModel();
+          $savenum = $cates->savecate($data,$cates);
           if ($savenum == '2') {        
               $this->error('管理员用户名不得为空！');
           }
@@ -69,18 +69,18 @@ class Admin extends Common
           }
            return ;
        }
-        //dump($admins);die;
-        if (!$admins) {
+        //dump($cates);die;
+        if (!$cates) {
             $this->error('该管理员不存在！');
         }
 
-        $this->assign('admins',$admins);
+        $this->assign('cates',$cates);
     	return $this->fetch();
     }
 
     public function del($id){
-        $admin = new AdminModel();
-        $delnum = $admin->deladmin($id);
+        $cate = new cateModel();
+        $delnum = $cate->delcate($id);
 
         if ($delnum == '1') {   
             $this->success('删除管理员成功！',url('lst'));
