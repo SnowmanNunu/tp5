@@ -62,12 +62,24 @@ class Admin extends Controller
 
     public function edit($id)
     {
+       $admins = db('admin')->find($id);
+
        if (request()->isPost()) {
           $data = input('post.');
-           dump($data);die;
-           //return ;
+           //dump($data);die;
+          $admins= new AdminModel();
+          $savenum = $admins->saveadmin($data,$admins);
+          if ($savenum == '2') {        
+              $this->error('管理员用户名不得为空！');
+          }
+
+          if ($savenum !==false) {        
+              $this->success('修改成功！',url('lst'));
+          }else{
+              $this->error('修改失败！');
+          }
+           return ;
        }
-        $admins = db('admin')->field('id,name,password')->find($id);
         //dump($admins);die;
         if (!$admins) {
             $this->error('该管理员不存在！');
@@ -75,5 +87,16 @@ class Admin extends Controller
 
         $this->assign('admins',$admins);
     	return $this->fetch();
+    }
+
+    public function del($id){
+        $admin = new AdminModel();
+        $delnum = $admin->deladmin($id);
+
+        if ($delnum == '1') {   
+            $this->success('删除管理员成功！',url('lst'));
+        }else{
+            $this->error('修改失败！');
+        }
     }
 }

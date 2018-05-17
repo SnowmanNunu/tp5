@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html><head>
         <meta charset="utf-8">
-    <title>童老师ThinkPHP交流群：484519446</title>
+    <title>ThinkPHP5 企业站</title>
 
     <meta name="description" content="Dashboard">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -20,7 +20,7 @@
     
 </head>
 <body>
-    <!-- 头部 -->
+
     {include file="public/top" /} 
     <!-- /头部 -->
     
@@ -56,12 +56,12 @@
             </div>
             <div class="widget-body">
                 <div id="horizontal-form">
-                    <form class="form-horizontal" role="form" action="{:url('admin/add')}" method="post">
+                    <form class="form-horizontal" role="form" action="{:url('admin/edit')}" method="post">
                         <input type="hidden" name="id" value="{$admins.id}">
                         <div class="form-group">
                             <label for="username" class="col-sm-2 control-label no-padding-right">管理员</label>
                             <div class="col-sm-6">
-                                <input class="form-control" id="username" placeholder="" value="{$admins.name}" name="name" required="" type="text">
+                                <input class="form-control" id="username" placeholder="" value="{$admins.name}" name="name"  type="text">
                             </div>
                             <p class="help-block col-sm-4 red">* 必填</p>
                         </div>
@@ -69,7 +69,7 @@
                         <div class="form-group">
                             <label for="group_id" class="col-sm-2 control-label no-padding-right">密码</label>
                             <div class="col-sm-6">
-                                 <input class="form-control" placeholder="" value="{$admins.password}" name="password" required="" type="text">
+                                 <input class="form-control" placeholder="" value="{$admins.password}" name="password" type="text">
                             </div>
                         </div>  
                         <div class="form-group">
