@@ -7,6 +7,17 @@ use app\admin\controller\Common;
 class cate extends Common
 {
 
+  protected $beforeActionList = [
+        'first',
+        'second' =>  ['except'=>'hello'],
+        'three'  =>  ['only'=>'hello,data'],
+    ];
+
+    public function first(){
+      echo 123;die;
+    }
+
+
     public function lst()
     {    
         $cate = new CateModel();
@@ -34,6 +45,16 @@ class cate extends Common
       $cateres=$cate->catetree();
       $this->assign('cateres',$cateres);
       return $this->fetch();
+    }
+
+    public function del()
+    {
+      $del=db('cate')->delete(input('id'));
+      if ($del) {
+        $this->success('删除栏目成功!',url('lst'));
+      }else{
+        $this->error('删除栏目失败!');
+      }
     }
 
 
