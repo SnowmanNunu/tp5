@@ -10,7 +10,7 @@ class cate extends Common
     public function lst()
     {    
         $cate = new CateModel();
-        $cateres=$cate->select();
+        $cateres=$cate->catetree();
         $this->assign('cateres',$cateres);
         return view();
 
@@ -30,7 +30,7 @@ class cate extends Common
           $this->error('添加栏目失败!');
         }
       }
-      
+
       $cateres=$cate->select();
       $this->assign('cateres',$cateres);
       return $this->fetch();
