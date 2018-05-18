@@ -53,10 +53,12 @@
         <div class="widget">
             <div class="widget-body">
                 <div class="flip-scroll">
+                <form action="" method="post">
                     <table class="table table-bordered table-hover">
                         <thead class="">
                             <tr>
                                 <th class="text-center" width="10%">ID</th>
+                                <th class="text-center" width="10%">排序</th>
                                 <th class="text-center">栏目名称</th>
                                 <th class="text-center">栏目类型</th>
                                 <th class="text-center">上级栏目</th>
@@ -68,6 +70,7 @@
 
                             <tr>
                                 <td align="center">{$vo.id}</td>
+                                <td align="center"><input type="text" name="{$vo.id}" style="width: 50px; text-align: center;" value="{$vo.sort}"></td>
                                 <td>{if condition="$vo['level'] neq 0"}|{/if}<?php echo str_repeat('---',$vo['level']*5);?>{$vo.catename}</td>
                                 <td align="center">
                                     {if condition="$vo['type'] eq 1"}
@@ -86,10 +89,12 @@
                                     </a>
                                 </td>
                             </tr>
-                        {/volist}
-                                                        
+                        {/volist}                                                
                      </tbody>
                     </table>
+                    <div><input class="btn btn-primary btn-sm shiny" style="margin-left:147px; margin-top:10px;" type="submit" value="排序" >
+                    </div>
+                </form>
                 </div>
                 <div style="padding-top: 10px;width: 230px;text-align:right;"></div>
                 <div>

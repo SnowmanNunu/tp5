@@ -22,5 +22,20 @@ class Cate extends Model
 	}
 
 
+	public function getchildrenid($cateid){
+		$cateres=$this->select();
+		return $this->_getchildrenid($cateres,$cateid);
+	}
+
+	public function _getchildrenid($cateres,$cateid){
+		static $arr = array();
+		foreach ($cateres as $k => $v) {
+			if ($v['pid'] == $cateid) {
+				$arr[]=$v['id'];
+				$this->_getchildrenid($cateres,$v['id']);
+			}
+		}
+		return $arr;
+	}
 
 }

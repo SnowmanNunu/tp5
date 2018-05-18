@@ -8,19 +8,19 @@ class cate extends Common
 {
 
   protected $beforeActionList = [
-        'first',
-        'second' =>  ['except'=>'hello'],
-        'three'  =>  ['only'=>'hello,data'],
+        // 'first',
+        // 'second' =>  ['except'=>'hello'],
+        'delsoncate'  =>  ['only'=>'del'],
     ];
-
-    public function first(){
-      echo 123;die;
-    }
 
 
     public function lst()
     {    
         $cate = new CateModel();
+        if (request()->isPost()) {
+          print_r(input('post.'));die;
+          return;
+        }
         $cateres=$cate->catetree();
         $this->assign('cateres',$cateres);
         return view();
@@ -56,6 +56,42 @@ class cate extends Common
         $this->error('删除栏目失败!');
       }
     }
+
+
+    public function edit(){
+
+      $cate = new CateModel();
+      if (request()->isPost()) {
+        $data=input('post.');
+        $save=$cate->save($data,['id'=>$data['id']]);
+        if($save !== false){
+                $this->success('修改栏目成功！',url('lst'));
+            }else{
+                $this->error('修改栏目失败！');
+            }
+            return;
+      }
+        $cates=$cate->find(input('id'));
+        $cateres=$cate->catetree();
+        $this->assign(array(
+            'cateres'=>$cateres,
+            'cates'=>$cates,
+            ));
+      return $this->fetch();
+    }
+
+
+
+    public function delsoncate(){
+      $cateid= input('id');  //要删除的当前栏目的ID
+      $cate = new CateModel;
+      $sonids = $cate->getchildrenid($cateid);
+      if ($sonids) {
+      db('cate')->delete($sonids);
+      }
+    }
+
+
 
 
 }
