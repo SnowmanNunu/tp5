@@ -31,7 +31,7 @@ class cate extends Common
         }
       }
 
-      $cateres=$cate->select();
+      $cateres=$cate->catetree();
       $this->assign('cateres',$cateres);
       return $this->fetch();
     }

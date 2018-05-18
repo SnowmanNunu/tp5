@@ -68,7 +68,7 @@
 
                             <tr>
                                 <td align="center">{$vo.id}</td>
-                                <td>{$vo.level}{$vo.catename}</td>
+                                <td>{if condition="$vo['level'] neq 0"}|{/if}<?php echo str_repeat('---',$vo['level']*5);?>{$vo.catename}</td>
                                 <td align="center">
                                     {if condition="$vo['type'] eq 1"}
                                     列表

@@ -63,7 +63,9 @@
                                <select name="pid">
                                    <option value="0">顶级栏目</option>
                                    {volist name="cateres" id="cate"}
-                                   <option value="{$cate.id}">{$cate.catename}</option>
+                                   <option value="{$cate.id}">{if condition="$cate['level'] neq 0"}|{/if}<?php echo str_repeat('-',$cate['level']*8);?>
+                                    {$cate.catename}
+                                   </option>
                                    {/volist}
                                </select>
                             </div>
