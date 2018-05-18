@@ -10,8 +10,8 @@ class cate extends Common
     public function lst()
     {    
         $cate = new CateModel();
-        $adminres = db('admin')->select();
-        $this->assign('adminres',$adminres);
+        $cateres=$cate->select();
+        $this->assign('cateres',$cateres);
         return view();
 
     }
