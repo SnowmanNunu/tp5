@@ -79,7 +79,7 @@
                                         </td>
                                         <td align="center">{if condition="$art['author'] eq ''"}未填写{else /}{$art.author}{/if}</td>
                                         <td align="center">{if condition="$art['rec'] eq 0"}未推荐{else /}已推荐{/if}</td>
-                                        <td align="center">{$art.catename}</td>
+                                        <td align="center">{$art.cateid}</td>
                                         <td align="center">
                                             <a href="{:url('edit',array('id'=>$art['id']))}" class="btn btn-primary btn-sm shiny">
                                                 <i class="fa fa-edit"></i> 编辑

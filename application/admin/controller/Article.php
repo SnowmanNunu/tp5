@@ -9,7 +9,11 @@ use think\Request;
 class Article extends Common
 {
   public function lst(){
-    
+
+    //$article = new ArticleModel(); 
+    $artres = db('article')->paginate(2);
+    //dump($artres);
+    $this->assign('artres',$artres); 
     return view();
   }
 
