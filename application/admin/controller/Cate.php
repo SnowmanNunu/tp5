@@ -18,7 +18,11 @@ class cate extends Common
     {    
         $cate = new CateModel();
         if (request()->isPost()) {
-          print_r(input('post.'));die;
+          $sorts = input('post.');
+          foreach ($sorts as $k => $v) {
+            $cate->update(['id'=>$k,'sort'=>$v]);
+          }
+          $this->success('更新排序成功！',url('lst'));
           return;
         }
         $cateres=$cate->catetree();

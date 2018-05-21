@@ -5,7 +5,7 @@ use think\Model;
 class Cate extends Model
 {
 	public function catetree(){
-		$cateres = $this->select();
+		$cateres = $this->order('sort asc')->select();
 		return $this->sort($cateres);
 	}
 
