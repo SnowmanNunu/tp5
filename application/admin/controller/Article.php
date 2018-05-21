@@ -11,7 +11,7 @@ class Article extends Common
   public function lst(){
 
     //$article = new ArticleModel(); 
-    $artres = db('article')->paginate(2);
+    $artres = db('article')->field('a.*,b.catename')->alias('a')->join('bk_cate b','a.cateid=b.id')->paginate(2);
     //dump($artres);
     $this->assign('artres',$artres); 
     return view();
@@ -49,7 +49,16 @@ class Article extends Common
 
 
 
-  public function edit(){
+  public function edit($id){
+    $arts = db('article')->field('a.*,b.catename')->alias('a')->join('bk_cate b','a.cateid=b.id')->find($id);
+
+    $cate=new CateModel();
+    $cateres=$cate->catetree();
+    $this->assign(array(
+      'cateres'=>$cateres,
+      'arts'=>$arts,
+    ))
+
     return view();
   }
   
