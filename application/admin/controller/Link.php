@@ -83,8 +83,18 @@ class link extends Common
         $this->error('删除链接失败!');
       }
     }
-  
 
+    // public function del(){
+    //     $del=LinkModel::destroy(input('id'));
+    //     if($del){
+    //        $this->success('删除链接成功！',url('lst')); 
+    //     }else{
+    //         $this->error('删除链接失败！');
+    //     }
+    // }
+
+
+  
 
 
 
