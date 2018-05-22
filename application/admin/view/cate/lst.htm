@@ -74,7 +74,9 @@
                                 <td>{if condition="$vo['level'] neq 0"}|{/if}<?php echo str_repeat('---',$vo['level']*5);?>{$vo.catename}</td>
                                 <td align="center">
                                     {if condition="$vo['type'] eq 1"}
-                                    列表
+                                    文章列表
+                                    {elseif condition="$vo['type'] eq 3"/}
+                                    图片列表
                                     {else /}
                                     单页
                                     {/if}

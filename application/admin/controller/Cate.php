@@ -2,6 +2,7 @@
 namespace app\admin\controller;
 use \think\Controller;
 use app\admin\model\Cate as cateModel;
+use app\admin\model\Article as ArticleModel;
 use app\admin\controller\Common;
 
 class cate extends Common
@@ -90,6 +91,12 @@ class cate extends Common
       $cateid= input('id');  //要删除的当前栏目的ID
       $cate = new CateModel;
       $sonids = $cate->getchildrenid($cateid);
+      $allcateid=$sonids;
+      $allcateid[]=$cateid;
+      foreach ($allcateid as $k => $v) {
+        $article = new ArticleModel();
+        $article->where(array('cateid'=>$v))->delete();
+      }
       if ($sonids) {
       db('cate')->delete($sonids);
       }
