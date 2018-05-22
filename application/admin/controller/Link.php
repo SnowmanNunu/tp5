@@ -53,13 +53,12 @@ class link extends Common
     }
 
 
-    public function edit()
+    public function edit($id)
     {
       if (request()->isPost()) {
         $data=input('post.');
         $link=new LinkModel();
         $res=$link->save($data,['id'=>$data['id']]);
-        //$save=$link->save($data,['id'=>$data['id']]);
 
         if ($res) {
           $this->success('修改链接成功！',url('lst'));
@@ -68,9 +67,21 @@ class link extends Common
         }
 
       }
-      $linkres=db('link')->order('sort desc')->find(input('id'));
+      $linkres=db('link')->order('sort desc')->find($id);
       $this->assign('linkres',$linkres);
       return view();
+    }
+
+    
+    public function del($id)
+    {
+      $link=new LinkModel();
+      $res=$link->where('id',$id)->delete();
+      if ($res) {
+        $this->success('删除链接成功!',url('lst'));
+      }else{
+        $this->error('删除链接失败!');
+      }
     }
   
 
