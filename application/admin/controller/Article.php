@@ -74,6 +74,16 @@ class Article extends Common
   }
   
 
+  public function del(){
+
+    if (ArticleModel::destroy(input('id'))) {
+      $this->success('删除文章成功!',url('lst'));
+    }else{
+      $this->error('删除文章失败!');
+    }
+
+
+  }
 
     
 
