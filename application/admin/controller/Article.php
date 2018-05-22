@@ -50,14 +50,25 @@ class Article extends Common
 
 
   public function edit($id){
-    $arts = db('article')->field('a.*,b.catename')->alias('a')->join('bk_cate b','a.cateid=b.id')->find($id);
+    if (request()->isPost()) {
+      $article = new ArticleModel;
+      $data= input('post.');
+      $save=$article->update($data);
+      if ($save) {
+        $this->success('修改文章成功!',url('lst'));
+      }else{
+        $this->error('修改文章失败!');
+      }
+      return;
 
+    }
+    $arts = db('article')->where(array('id'=>input('id')))->find($id);
     $cate=new CateModel();
     $cateres=$cate->catetree();
     $this->assign(array(
       'cateres'=>$cateres,
       'arts'=>$arts,
-    ))
+    ));
 
     return view();
   }
