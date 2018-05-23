@@ -37,9 +37,16 @@ class cate extends Common
        $cate = new CateModel();
 
       if (request()->isPost()) {
-        //$data = input('post.');
-        $cate->data(input('post.'));
-        $add = $cate->save();
+        $data = input('post.');
+        //$cate->data($data);
+
+        //验证规则
+         $validate = \think\Loader::validate('Cate');
+            if(!$validate->scene('add')->check($data)){
+                $this->error($validate->getError());
+            }
+
+        $add = $cate->save($data);
         if ($add) {
           $this->success('添加栏目成功!',url('lst'));
         }else{
@@ -68,6 +75,13 @@ class cate extends Common
       $cate = new CateModel();
       if (request()->isPost()) {
         $data=input('post.');
+
+        //验证规则
+         $validate = \think\Loader::validate('Cate');
+            if(!$validate->scene('edit')->check($data)){
+                $this->error($validate->getError());
+            }
+
         $save=$cate->save($data,['id'=>$data['id']]);
         if($save !== false){
                 $this->success('修改栏目成功！',url('lst'));
