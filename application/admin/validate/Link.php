@@ -21,6 +21,7 @@ class Link extends Validate
     ];
 
     protected $scene = [
+        //'add'  =>  ['title'=>'require','url','desc'],  对某些字段的规则重新设置
         'add'  =>  ['title','url','desc'],
         'edit'  =>  ['title','url','desc'],
     ];

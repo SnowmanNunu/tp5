@@ -71,7 +71,7 @@ class link extends Common
 
         $res=$link->save($data,['id'=>$data['id']]);
 
-        if ($res) {
+        if ($res !==false) {
           $this->success('修改链接成功！',url('lst'));
         }else{
           $this->error('更新链接失败!');

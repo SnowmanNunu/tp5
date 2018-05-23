@@ -23,15 +23,11 @@ class Article extends Common
       $data=input('post.');
       $article = new ArticleModel;
 
-      // if ($_FILES['thumb']['tmp_name']) {
-      //   $file=request()->file('thumb');
-      //   $info = $file->move(ROOT_PATH . 'public' . DS . 'uploads');
-      //   if ($info) {
-      //     $thumb=ROOT_PATH . 'public' . DS . 'uploads'.'/'.$info->getExtension();
-      //     $thumb=ROOT_PATH . 'public' . DS . 'uploads'.'/'.$info->getSaveName();
-      //     $data['thumb']=$thumb;
-      //   }
-      // }
+      //验证规则
+         $validate = \think\Loader::validate('Article');
+            if(!$validate->scene('add')->check($data)){
+                $this->error($validate->getError());
+            }
 
       if ($article->save($data)) {
         $this->success('添加文章成功!',url('lst'));
@@ -53,6 +49,12 @@ class Article extends Common
     if (request()->isPost()) {
       $article = new ArticleModel;
       $data= input('post.');
+      //验证规则
+         $validate = \think\Loader::validate('Article');
+            if(!$validate->scene('edit')->check($data)){
+                $this->error($validate->getError());
+            }
+
       $save=$article->update($data);
       if ($save) {
         $this->success('修改文章成功!',url('lst'));
