@@ -37,10 +37,16 @@ class link extends Common
 
     }
 
+    
     public function add()
     { 
       if (request()->isPost()) {
         $data = input('post.');
+        //验证规则
+        $validate = \think\Loader::validate('Link');
+            if(!$validate->scene('add')->check($data)){
+                $this->error($validate->getError());
+            }
         $res=db('link')->insert($data);
         if ($res) {
           $this->success('添加友情链接成功!',url('lst'));
@@ -49,7 +55,6 @@ class link extends Common
         }
       }
       return view();
-      
     }
 
 
@@ -58,6 +63,12 @@ class link extends Common
       if (request()->isPost()) {
         $data=input('post.');
         $link=new LinkModel();
+        //验证规则
+         $validate = \think\Loader::validate('Link');
+            if(!$validate->scene('edit')->check($data)){
+                $this->error($validate->getError());
+            }
+
         $res=$link->save($data,['id'=>$data['id']]);
 
         if ($res) {
