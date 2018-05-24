@@ -35,9 +35,15 @@ class Admin extends Common
     		$data = input('post.');
     		//dump($data);
     		// $res = db('bk_admin')->insert($data);
-            $admin = new AdminModel();
-            $res = $admin->addadmin($data);
+        $admin = new AdminModel();
 
+         //验证规则
+         $validate = \think\Loader::validate('Admin');
+            if(!$validate->scene('add')->check($data)){
+                $this->error($validate->getError());
+            }
+
+        $res = $admin->addadmin($data);
     		if($res){
     			$this->success('添加管理员成功！',url('lst'));
     		}else{
@@ -57,6 +63,13 @@ class Admin extends Common
           $data = input('post.');
            //dump($data);die;
           $admins= new AdminModel();
+
+           //验证规则
+          $validate = \think\Loader::validate('Admin');
+            if(!$validate->scene('edit')->check($data)){
+                $this->error($validate->getError());
+            }
+
           $savenum = $admins->saveadmin($data,$admins);
           if ($savenum == '2') {        
               $this->error('管理员用户名不得为空！');
