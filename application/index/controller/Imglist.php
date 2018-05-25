@@ -2,10 +2,10 @@
 namespace app\index\controller;
 use \think\Controller;
 
-class Article extends Common
+class Imglist extends Common
 {
     public function index()
     {
-        return $this->fetch('article');
+        return $this->fetch('imglist');
     }
 }
