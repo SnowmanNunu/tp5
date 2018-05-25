@@ -17,7 +17,7 @@ class Conf extends Common
         return;
 
       }
-      $confres=ConfModel::order('sort asc')->paginate(5);
+      $confres=ConfModel::order('sort asc')->paginate(8);
       $this->assign('confres',$confres);
       return view();
     }
@@ -75,6 +75,16 @@ class Conf extends Common
     }
 
     public function conf(){
+      if (request()->isPost()) {
+        $data=input('post.');  
+        if ($data) {      
+           foreach ($data as $k => $v) {
+            ConfModel::where('enname',$k)->update(['value'=>$v]);
+          }
+          $this->success('修改配置成功!');
+        }  
+
+      }
       $confres=ConfModel::order('sort asc')->select();
       $this->assign('confres',$confres);
       return view();
