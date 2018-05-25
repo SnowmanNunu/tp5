@@ -26,6 +26,13 @@ class Conf extends Common
     public function add(){
       if (request()->isPost()) {
       $data=input('post.');
+
+      //验证规则
+        $validate = \think\Loader::validate('Conf');
+            if(!$validate->check($data)){
+                $this->error($validate->getError());
+            }
+
       if($data['values']){
                 $data['values']=str_replace('，', ',', $data['values']);
             }
@@ -50,6 +57,17 @@ class Conf extends Common
 
       if (request()->isPost()) {
         $data=input('post.');
+
+        //验证规则
+        $validate = \think\Loader::validate('Conf');
+            if(!$validate->scene('edit')->check($data)){
+                $this->error($validate->getError());
+            }
+
+            if ($data['values']) {
+              $data['values']=str_replace('，', ',', $data['values']);
+            }
+
         $conf=new ConfModel();
         $res=$conf->save($data,['id'=>$data['id']]);
         if ($res !==false) {
@@ -74,20 +92,44 @@ class Conf extends Common
 
     }
 
-    public function conf(){
-      if (request()->isPost()) {
-        $data=input('post.');  
-        if ($data) {      
-           foreach ($data as $k => $v) {
-            ConfModel::where('enname',$k)->update(['value'=>$v]);
-          }
-          $this->success('修改配置成功!');
-        }  
 
-      }
-      $confres=ConfModel::order('sort asc')->select();
-      $this->assign('confres',$confres);
-      return view();
+    public function conf(){
+        if(request()->isPost()){
+            $data=input('post.');
+            $formarr=array();
+            foreach ($data as $k => $v) {
+                $formarr[]=$k;
+            }
+            $_confarr=db('conf')->field('enname')->select();
+            $confarr=array();
+            foreach ($_confarr as $k => $v) {
+                $confarr[]=$v['enname'];
+            }
+            $checkboxarr=array();
+            foreach ($confarr as $k => $v) {
+                if(!in_array($v, $formarr)){
+                    $checkboxarr[]=$v;
+                }
+            }
+            if($checkboxarr){
+                foreach ($checkboxarr as $ke => $v) {
+                    ConfModel::where('enname',$v)->update(['value'=>'']);
+                }
+            }
+            if($data){
+            
+                foreach ($data as $k=>$v) {
+                    ConfModel::where('enname',$k)->update(['value'=>$v]);
+                }
+
+                $this->success('修改配置成功！');
+
+            }
+            return;
+        }
+        $confres=ConfModel::order('sort desc')->select();
+        $this->assign('confres',$confres);
+        return view();
     }
 
 }
