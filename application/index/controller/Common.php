@@ -6,14 +6,15 @@ class Common extends Controller
 {
     public function _initialize()
     {
-        echo 123;
+        $conf= new \app\index\model\Conf();
+        $_confres=$conf->getAllConf();
+        $confres=array();
+        foreach ($_confres as $k => $v) {
+        	$confres[$v['enname']]=$v['cnname'];
+        }
+        //dump($confres);
+        $this->assign('confres',$confres);
     }
 
-    public function abc(){
-    	echo 456;
-    }
-
-    public function test(){
-    	echo 11111;
-    }
+    
 }
