@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html><head>
-        <meta charset="utf-8">
+	    <meta charset="utf-8">
     <title>ThinkPHP5.0</title>
 
     <meta name="description" content="Dashboard">
@@ -20,13 +20,13 @@
     
 </head>
 <body>
-    <!-- 头部 -->
-    {include file="public/top" /} 
-    <!-- /头部 -->
-    
-    <div class="main-container container-fluid">
-        <div class="page-container">
-            <!-- Page Sidebar -->
+	<!-- 头部 -->
+	{include file="public/top" /} 
+	<!-- /头部 -->
+	
+	<div class="main-container container-fluid">
+		<div class="page-container">
+			<!-- Page Sidebar -->
             {include file="public/left" /} 
             <!-- /Page Sidebar -->
             <!-- Page Content -->
@@ -38,9 +38,9 @@
                         <a href="#">系统</a>
                     </li>
                                         <li>
-                        <a href="{:url('lst')}">链接管理</a>
+                        <a href="{:url('lst')}">用户组管理</a>
                     </li>
-                                        <li class="active">添加链接</li>
+                                        <li class="active">添加用户组</li>
                                         </ul>
                 </div>
                 <!-- /Page Breadcrumb -->
@@ -52,31 +52,56 @@
     <div class="col-lg-12 col-sm-12 col-xs-12">
         <div class="widget">
             <div class="widget-header bordered-bottom bordered-blue">
-                <span class="widget-caption">新增链接</span>
+                <span class="widget-caption">新增用户组</span>
             </div>
             <div class="widget-body">
                 <div id="horizontal-form">
                     <form class="form-horizontal" role="form" action="" method="post">
                        <div class="form-group">
-                            <label for="username" class="col-sm-2 control-label no-padding-right">链接标题</label>
+                            <label for="username" class="col-sm-2 control-label no-padding-right">用户组名称</label>
                             <div class="col-sm-6">
-                                <input class="form-control"  placeholder="" name="title"  type="text">
+                                <input class="form-control"  placeholder="" name="title" required="" type="text">
                             </div>
                             <p class="help-block col-sm-4 red">* 必填</p>
                         </div>
                         <div class="form-group">
-                            <label for="username" class="col-sm-2 control-label no-padding-right">链接地址</label>
+                            <label for="username" class="col-sm-2 control-label no-padding-right">启用状态</label>
                             <div class="col-sm-6">
-                                <input class="form-control"  placeholder="" name="url"  type="text">
+                            <p class="help-block col-sm-4 red">
+                                <label>
+                                    <input class="checkbox-slider colored-darkorange" name="status" value="1" checked="checked" type="checkbox">
+                                    <span class="text"></span>
+                                </label>
+                            </p>
                             </div>
                             <p class="help-block col-sm-4 red">* 必填</p>
                         </div>
                         <div class="form-group">
-                            <label for="username" class="col-sm-2 control-label no-padding-right">链接描述</label>
+                            <label for="username" class="col-sm-2 control-label no-padding-right"></label>
                             <div class="col-sm-6">
-                                <textarea name="desc" class="form-control"></textarea>
+                               <table class="table table-hover">
+                                    <thead class="bordered-darkorange">
+                                        <tr>
+                                            <th>
+                                                配置权限
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {volist name="authRuleRes" id="authRule"}
+                                            <tr>
+                                                <td>
+                                                    <label>
+                                                        <?php echo str_repeat('&nbsp;', $authRule['level']*3);?>
+                                                        <input name="rules[]" value="{$authRule.id}" dataid="id-{$authRule.dataid}" class="inverted checkbox-parent {if condition="$authRule['level'] neq 0"} checkbox-child {/if} " type="checkbox">
+                                                        <span {if condition="$authRule['level'] eq 0"} style="font-weight:bold; font-size:14px;" {/if} class="text">{$authRule.title}</span>
+                                                    </label>
+                                                </td>
+                                            </tr>
+                                        {/volist}
+                                    </tbody>
+                                </table>
                             </div>
-                            <p class="help-block col-sm-4 red">* 必填</p>
                         </div>
                         <div class="form-group">
                             <div class="col-sm-offset-2 col-sm-10">
@@ -94,16 +119,51 @@
                 <!-- /Page Body -->
             </div>
             <!-- /Page Content -->
-        </div>  
-    </div>
+		</div>	
+	</div>
 
-        <!--Basic Scripts-->
+	    <!--Basic Scripts-->
     <script src="__ADMIN__/style/jquery_002.js"></script>
     <script src="__ADMIN__/style/bootstrap.js"></script>
     <script src="__ADMIN__/style/jquery.js"></script>
     <!--Beyond Scripts-->
     <script src="__ADMIN__/style/beyond.js"></script>
-    
-
+    <script type="text/javascript">
+/* 权限配置 */
+$(function () {
+    //动态选择框，上下级选中状态变化
+    $('input.checkbox-parent').on('change', function () {
+        var dataid = $(this).attr("dataid");
+        $('input[dataid^=' + dataid + ']').prop('checked', $(this).is(':checked'));
+    });
+    $('input.checkbox-child').on('change', function () {
+        var dataid = $(this).attr("dataid");
+        dataid = dataid.substring(0, dataid.lastIndexOf("-"));
+        var parent = $('input[dataid=' + dataid + ']');
+        if ($(this).is(':checked')) {
+            parent.prop('checked', true);
+            //循环到顶级
+            while (dataid.lastIndexOf("-") != 2) {
+                dataid = dataid.substring(0, dataid.lastIndexOf("-"));
+                parent = $('input[dataid=' + dataid + ']');
+                parent.prop('checked', true);
+            }
+        } else {
+            //父级
+            if ($('input[dataid^=' + dataid + '-]:checked').length == 0) {
+                parent.prop('checked', false);
+                //循环到顶级
+                while (dataid.lastIndexOf("-") != 2) {
+                    dataid = dataid.substring(0, dataid.lastIndexOf("-"));
+                    parent = $('input[dataid=' + dataid + ']');
+                    if ($('input[dataid^=' + dataid + '-]:checked').length == 0) {
+                        parent.prop('checked', false);
+                    }
+                }
+            }
+        }
+    });
+});
+    </script>
 
 </body></html>
