@@ -28,6 +28,29 @@ class AuthGroup extends Common
       return view();
     }
 
+    public function edit(){
+      if (request()->isPost()) {
+      $data=input('post.');
+      $_data=array();
+      foreach ($_data as $k => $v) {
+        $_data[]=$k;
+      }
+      if (!in_array('status', $_data)) {
+        $data['status']=0;
+      }
+      $save=db('auth_group')->update($data);
+      if ($save !==false) {
+        $this->success('修改用户组成功!',url('lst'));
+      }else{
+        $this->error('修改用户组失败!');
+      }
+      return;
+      }
+      $authgroups=db('auth_group')->find(input('id'));
+      $this->assign('authgroups',$authgroups);
+      return view();
+
+    }
 
     public function del(){
       $data=input('id');
@@ -39,9 +62,6 @@ class AuthGroup extends Common
       }
     }
 
-    public function edit(){
-
-    }
 
 
   
