@@ -9,9 +9,12 @@ class AuthRule extends Common
 
   public function lst(){
 
-    $authRuleRes=AuthRuleModel::paginate(5);
-    $this->assign('authRuleRes',$authRuleRes);
-    return view();
+    // $authRuleRes=AuthRuleModel::paginate(5);
+    // $this->assign('authRuleRes',$authRuleRes);
+     $authRule=new AuthRuleModel();
+     $authRuleRes=$authRule->authRuleTree();
+     $this->assign('authRuleRes',$authRuleRes);
+     return view();
   }    
 
 
