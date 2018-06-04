@@ -11,10 +11,18 @@ class AuthRule extends Common
 
     // $authRuleRes=AuthRuleModel::paginate(5);
     // $this->assign('authRuleRes',$authRuleRes);
-     $authRule=new AuthRuleModel();
-     $authRuleRes=$authRule->authRuleTree();
-     $this->assign('authRuleRes',$authRuleRes);
-     return view();
+    $authRule=new AuthRuleModel();
+        if(request()->isPost()){
+            $sorts=input('post.');
+            foreach ($sorts as $k => $v) {
+                $authRule->update(['id'=>$k,'sort'=>$v]);
+            }
+            $this->success('更新排序成功！',url('lst'));
+            return;
+        }
+        $authRuleRes=$authRule->authRuleTree();
+        $this->assign('authRuleRes',$authRuleRes);
+        return view();
   }    
 
 
@@ -40,6 +48,34 @@ class AuthRule extends Common
     return view();
   }
 
+
+  public function edit(){
+    if (request()->isPost()) {
+      $data=input('post.');
+      $plevel=db('auth_rule')->where('id',$data['pid'])->field('level')->find();
+      if ($plevel) {
+        $data['level']=$plevel['level']+1;
+      }else{
+        $data['level']=0;
+      }
+      $save=db('auth_rule')->update($data);
+      if ($save) {
+        $this->success('修改权限成功!',url('lst'));
+      }else{
+        $this->error('修改权限失败!');
+      }
+
+      return;
+    }
+    $authRule=new AuthRuleModel();
+    $authRuleRes=$authRule->authRuleTree();
+    $authRules=$authRule->find(input('id'));
+    $this->assign(array(
+        'authRuleRes'=>$authRuleRes,
+        'authRules'  =>$authRules,
+      ));
+    return view();
+  }
 
 
 }
