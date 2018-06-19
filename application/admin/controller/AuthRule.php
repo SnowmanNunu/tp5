@@ -77,5 +77,14 @@ class AuthRule extends Common
     return view();
   }
 
+  public function del(){
+    $authRule = new AuthRuleModel();
+    $authRuleIds = $authRule->getchildrenid(input('id'));
+    dump($authRuleIds);die;
+  }
+
+
+
+
 
 }

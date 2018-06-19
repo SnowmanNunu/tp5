@@ -21,6 +21,24 @@ class AuthRule extends Model
 	}
 
 
+	public function getchildrenid($authRuleId){
+		$AuthRuleRes=$this->select();
+		return $this->_getchildrenid($AuthRuleRes,$authRuleId);
+	}
+
+	public function _getchildrenid($AuthRuleRes,$authRuleId){
+		static $arr = array();
+		foreach ($AuthRuleRes as $k => $v) {
+			if ($v['pid'] == $authRuleId) {
+				$arr[]=$v['id'];
+				$this->_getchildrenid($AuthRuleRes,$v['id']);
+			}
+		}
+		return $arr;
+	}
+
+
+
 }
 
 
