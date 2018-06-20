@@ -15,17 +15,23 @@ class AuthGroup extends Common
 
 
     public function add(){
-      if(request()->isPost()){
-        $data=input('post.');
-        $add=db('auth_group')->insert($data);
-        if ($add) {
-          $this->success('添加用户组成功!',url('lst'));
-        }else{
-          $this->error('添加用户组失败!');
+        if(request()->isPost()){
+            $data=input('post.');
+            if($data['rules']){
+                $data['rules']=implode(',', $data['rules']);
+            }
+            $add=db('auth_group')->insert($data);
+            if($add){
+                $this->success('添加用户组成功！',url('lst'));
+            }else{
+                $this->error('添加用户组失败！');
+            }
+            return;
         }
-        return;
-      }
-      return view();
+        $authRule=new \app\admin\model\AuthRule();
+        $authRuleRes=$authRule->authRuleTree();  
+        $this->assign('authRuleRes',$authRuleRes);
+        return view();
     }
 
     public function edit(){
