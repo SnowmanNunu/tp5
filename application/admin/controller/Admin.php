@@ -8,24 +8,18 @@ class Admin extends Common
 {
 
     public function lst()
-    {
-        $admin = new AdminModel();
-        //$res = db('admin')->where(array('name'=>'Coco','password'=>123))->select();
-        
-         $adminres = $admin->getadmin();
-         $this->assign('adminres',$adminres);
-         return view();
-          //$res = AdminModel::getByPassword(2);
-
-        // foreach ($res as $k => $v) {
-        //    // echo $k.'--'.$v;
-        //    echo $v->password; 
-        //    echo '<br>';
-        // }
-        // dump($res);
-     //    die;
-        
-    }
+    {   $auth=new Auth();
+        $admin=new AdminModel();
+        $adminres=$admin->getadmin();
+        foreach ($adminres as $k => $v) {
+            $_groupTitle=$auth->getGroups($v['id']);
+            //dump($_groupTitle);
+            $groupTitle=$_groupTitle[0]['title'];
+            $v['groupTitle']=$groupTitle;
+        }
+        $this->assign('adminres',$adminres);
+        return view();
+  }
 
     public function add()
     {
