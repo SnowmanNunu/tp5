@@ -79,6 +79,7 @@ class AuthRule extends Common
 
   public function del(){
     $authRule = new AuthRuleModel();
+    $authRule->getparentid(input('id'));
     $authRuleIds = $authRule->getchildrenid(input('id'));
     $authRuleIds[]=input('id');
     //dump($authRuleIds);die;

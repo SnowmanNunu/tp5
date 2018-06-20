@@ -34,28 +34,34 @@ class AuthGroup extends Common
         return view();
     }
 
-    public function edit(){
-      if (request()->isPost()) {
-      $data=input('post.');
-      $_data=array();
-      foreach ($_data as $k => $v) {
-        $_data[]=$k;
-      }
-      if (!in_array('status', $_data)) {
-        $data['status']=0;
-      }
-      $save=db('auth_group')->update($data);
-      if ($save !==false) {
-        $this->success('修改用户组成功!',url('lst'));
-      }else{
-        $this->error('修改用户组失败!');
-      }
-      return;
-      }
-      $authgroups=db('auth_group')->find(input('id'));
-      $this->assign('authgroups',$authgroups);
-      return view();
 
+    public function edit(){
+        if(request()->isPost()){
+            $data=input('post.');
+            if($data['rules']){
+                $data['rules']=implode(',', $data['rules']);
+            }
+            $_data=array();
+            foreach ($data as $k => $v) {
+                $_data[]=$k;
+            }
+            if(!in_array('status', $_data)){
+                $data['status']=0;
+            }
+            $save=db('auth_group')->update($data);
+            if($save!==false){
+                $this->success('修改用户组成功！',url('lst'));
+            }else{
+                $this->error('修改用户组失败！');
+            }
+            return;
+        }
+        $authgroups=db('auth_group')->find(input('id'));
+        $this->assign('authgroups',$authgroups);
+        $authRule=new \app\admin\model\AuthRule();
+        $authRuleRes=$authRule->authRuleTree();
+        $this->assign('authRuleRes',$authRuleRes);
+        return view();
     }
 
     public function del(){
@@ -70,9 +76,8 @@ class AuthGroup extends Common
 
 
 
+
   
-
-
 
 
 
