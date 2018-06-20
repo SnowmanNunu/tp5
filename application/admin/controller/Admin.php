@@ -9,12 +9,10 @@ class Admin extends Common
 
     public function lst()
     {
-       // $res = db('admin')->where(array('name'=>'Coco','password'=>123))->select();
         $admin = new AdminModel();
         //$res = db('admin')->where(array('name'=>'Coco','password'=>123))->select();
         
          $adminres = $admin->getadmin();
-         //dump($res);
          $this->assign('adminres',$adminres);
          return view();
           //$res = AdminModel::getByPassword(2);
@@ -51,9 +49,12 @@ class Admin extends Common
     		}
     		return;
     	}
+      $authGroupRes=db('auth_group')->select();
+      $this->assign('authGroupRes',$authGroupRes);
 
     	return $this->fetch();
     }
+
 
     public function edit($id)
     {
@@ -87,8 +88,12 @@ class Admin extends Common
             $this->error('该管理员不存在！');
         }
 
-        $this->assign('admins',$admins);
-    	return $this->fetch();
+        $authGroupAccess=db('auth_group_access')->where(array('uid'=>$id))->find();
+        $authGroupRes=db('auth_group')->select();
+        $this->assign('authGroupRes',$authGroupRes);
+        $this->assign('admin',$admins);
+        $this->assign('groupId',$authGroupAccess['group_id']);
+        return view();
     }
 
     public function del($id){

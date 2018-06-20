@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html><head>
         <meta charset="utf-8">
-    <title>ThinkPHP5 企业站</title>
+    <title>ThinkPHP5.0</title>
 
     <meta name="description" content="Dashboard">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -20,14 +20,14 @@
     
 </head>
 <body>
-
+    <!-- 头部 -->
     {include file="public/top" /} 
     <!-- /头部 -->
     
     <div class="main-container container-fluid">
         <div class="page-container">
-                        <!-- Page Sidebar -->
-             {include file="public/left" /}
+            <!-- Page Sidebar -->
+            {include file="public/left" /} 
             <!-- /Page Sidebar -->
             <!-- Page Content -->
             <div class="page-content">
@@ -38,7 +38,7 @@
                         <a href="#">系统</a>
                     </li>
                                         <li>
-                        <a href="{:url('admin/lst')}">用户管理</a>
+                        <a href="{:url('lst')}">管理员管理</a>
                     </li>
                                         <li class="active">修改管理员</li>
                                         </ul>
@@ -56,20 +56,31 @@
             </div>
             <div class="widget-body">
                 <div id="horizontal-form">
-                    <form class="form-horizontal" role="form" action="{:url('admin/edit')}" method="post">
-                        <input type="hidden" name="id" value="{$admins.id}">
+                    <form class="form-horizontal" role="form" action="" method="post">
+                        <input type="hidden" name="id" value="{$admin.id}">
                         <div class="form-group">
-                            <label for="username" class="col-sm-2 control-label no-padding-right">管理员</label>
+                            <label for="username" class="col-sm-2 control-label no-padding-right">所属用户组</label>
                             <div class="col-sm-6">
-                                <input class="form-control" id="username" placeholder="" value="{$admins.name}" name="name"  type="text">
+                                <select name="group_id">
+                                    {volist name="authGroupRes" id="authGroupRes"}
+                                        <option {if condition="$authGroupRes['id'] eq $groupId"}selected="selected"{/if} value="{$authGroupRes.id}">{$authGroupRes.title}</option>
+                                    {/volist}
+                                </select>
+                            </div>
+                            <p class="help-block col-sm-4 red">* 必填</p>
+                        </div>
+                        <div class="form-group">
+                            <label for="username" class="col-sm-2 control-label no-padding-right">管理员名称</label>
+                            <div class="col-sm-6">
+                                <input class="form-control"  placeholder="" name="name" value="{$admin.name}"  type="text">
                             </div>
                             <p class="help-block col-sm-4 red">* 必填</p>
                         </div>
 
                         <div class="form-group">
-                            <label for="group_id" class="col-sm-2 control-label no-padding-right">密码</label>
+                            <label for="group_id" class="col-sm-2 control-label no-padding-right">管理员密码</label>
                             <div class="col-sm-6">
-                                 <input class="form-control" placeholder="" value="{$admins.password}" name="password" type="text">
+                                <input class="form-control"  placeholder="" name="password" value="" type="text">
                             </div>
                         </div>  
                         <div class="form-group">
