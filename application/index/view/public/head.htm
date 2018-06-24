@@ -10,21 +10,18 @@
         <div id="navi">
 
 <ul id="jsddm">
-<li><a class="navi_home" href="/">首页</a></li>
-<!-- <li><a class="navi_home" target="_blank" href="http://www.chuanke.com/s2260700.html">ThinkPHP5视频教程</a></li> -->
+<li><a class="navi_home" href="{:url('index/index')}">首页</a></li>
 {volist name="cateres" id="cate"}
-
-<li><a {if condition="$cate['children'] neq 0"} class="havechild{/if}" href="/public/index.php/index/artlist/index/id/1">{$cate.catename}</a>
- {if condition="$cate['children'] neq 0"}   
+<li><a {if condition="$cate['children'] neq 0"} class="havechild" {/if} href="/public/index.php/index/{if condition="$cate['type'] eq 1"}artlist{elseif condition="$cate['type'] eq 3" /}imglist{else /}page{/if}/index/cateid/{$cate.id}">{$cate.catename}</a>
+{if condition="$cate['children'] neq 0"}
 <ul>
 <?php foreach ($cate['children'] as $k2 => $v2):?>
-<li><a href="/lookbike/fixed-gear/"><?php echo $v2['catename'];?></a></li>
+<li><a href="/public/index.php/index/{if condition="$v2['type'] eq 1"}artlist{elseif condition="$v2['type'] eq 3" /}imglist{else /}page{/if}/index/cateid/{$v2.id}"><?php echo $v2['catename'];?></a></li>
 <?php endforeach;?>
 </ul>
 {/if}
  </li>
 {/volist}
-
 </ul>
             <div style="clear: both;">
             </div>
