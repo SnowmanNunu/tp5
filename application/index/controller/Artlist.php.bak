@@ -1,6 +1,7 @@
 <?php
 namespace app\index\controller;
-use app\index\model\Article;
+use \think\Controller;
+
 class Artlist extends Common
 {
     public function index()
